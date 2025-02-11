@@ -392,7 +392,7 @@ http-response ^https?:\/\/gzfanyin\.com\/api\/ums\/getMember script-path=https:/
 http-response ^https?:\/\/(iosapi\.yueshuian|question\.tiku\.cqxcj|base\.cmoe|yyapi\.yayingtk|learn\.cqrry|api\.sryx|api\.meigit|question\.api\.anjiazui|app\.bftk|question\.civil\.shaoeyy)\.(com|top|net).+(common|front\/customer|vip\/getValidTime) script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/tiku.js, requires-body=true, timeout=60, tag=tiku
 
 #波点音乐 hostname = bd-api.kuwo.cn
-http-response ^https:\/\/bd-api\.kuwo\.cn\/api\/(ucenter\/users|play\/listening\/user|service\/(home\/index|banner\/myPage|advert\/watch)) script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/bodian.js, requires-body=true, timeout=60, tag=bodian
+http-response ^https:\/\/bd-api\.kuwo\.cn\/api\/(ucenter\/users|play\/listening\/user|service\/(home\/index|banner\/myPage|advert\/watch)) script-path=https://raw.githubusercontent.com/jfeng018/loonScript/refs/heads/master/script/bd.js, requires-body=true, timeout=60, tag=bodian
 
 #智能助手 hostname = www.kaolahome.com, cat-revenuecat-qscqkotbrh.cn-hongkong.fcapp.run
 http-response ^https?:\/\/(www\.kaolahome\.com\/xunnews|cat-revenuecat-qscqkotbrh\.cn-hongkong\.fcapp\.run)\/.+\/(receipts$|subscribers\/?(.*?)*$) script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/zhinengzhushou.js, requires-body=true, timeout=60, tag=zhinengzhushou
