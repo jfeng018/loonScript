@@ -23,7 +23,8 @@ const vipa = /api\/(ucenter\/users|play\/listening\/user)/;
 const ad = /api\/service\/(home\/index|banner\/myPage)/;
 const advert = /api\/service\/advert\/watch/;
 
-if (vipa.test($request.url)) {
+// 只在返回数据包含 "payInfo" 时修改 VIP 信息
+if (vipa.test($request.url) && chxm1023.data.hasOwnProperty("payInfo")) {
     chxm1023.data.payInfo = {
         "redFlower": 99,
         "expireDate": 4092599349000,
@@ -33,31 +34,40 @@ if (vipa.test($request.url)) {
         "lastPayType": 1,
         "payExpireDate": 4092599349000
     };
-    chxm1023.data.payRights = {
-        "headPendant": {
-            "id": 11,
-            "name": "音波",
-            "pic": "https://bodiancdn.kuwo.cn/file/bc92ceb2fb555e34246cdf4f558015ec.gif"
-        }
-    };
-    chxm1023.data.isBind = 1;
-    chxm1023.data.userInfo = {
-        ...chxm1023.data.userInfo,
-        "isVip": 1,
-        "authType": 3,
-        "headImg": "https://bodiancdn.kuwo.cn/file/bc92ceb2fb555e34246cdf4f558015ec.gif",
-        "status": 1
-    };
-}
 
-if (ad.test($request.url)) {
-    chxm1023.data.bannerList = [];
-    if (chxm1023.data.moduleList && chxm1023.data.moduleList.length > 0) {
-        chxm1023.data.moduleList = chxm1023.data.moduleList.filter(item => item.name !== "轮播图" && item.name !== "波点实验室");
+    // 仅在返回数据包含 "userInfo" 时修改用户信息
+    if (chxm1023.data.hasOwnProperty("userInfo")) {
+        chxm1023.data.userInfo = {
+            ...chxm1023.data.userInfo,
+            "isVip": 1,
+            "authType": 3,
+            "headImg": "https://bodiancdn.kuwo.cn/file/bc92ceb2fb555e34246cdf4f558015ec.gif",
+            "status": 1
+        };
+    }
+
+    // 仅在返回数据包含 "payRights" 时修改
+    if (chxm1023.data.hasOwnProperty("payRights")) {
+        chxm1023.data.payRights = {
+            "headPendant": {
+                "id": 11,
+                "name": "音波",
+                "pic": "https://bodiancdn.kuwo.cn/file/bc92ceb2fb555e34246cdf4f558015ec.gif"
+            }
+        };
     }
 }
 
-if (advert.test($request.url)) {
+// 仅当返回数据包含 "bannerList" 或 "moduleList" 时才进行去广告
+if (ad.test($request.url) && chxm1023.data.hasOwnProperty("bannerList")) {
+    chxm1023.data.bannerList = [];
+}
+if (ad.test($request.url) && chxm1023.data.hasOwnProperty("moduleList")) {
+    chxm1023.data.moduleList = chxm1023.data.moduleList.filter(item => item.name !== "轮播图" && item.name !== "波点实验室");
+}
+
+// 仅当返回数据包含广告信息时进行修改
+if (advert.test($request.url) && chxm1023.data) {
     chxm1023.data = {
         "mvGuide": "看广告，解锁所有VIP歌曲\n解锁后可畅听%s",
         "expireTime": 0,
