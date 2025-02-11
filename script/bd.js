@@ -18,6 +18,17 @@
  *************************************/
 
 var body = $response.body;
+
+// 处理 chunked 传输，去除 `chunk size` 和尾部 `0`
+if (body.includes("\r\n")) {
+    let lines = body.split("\r\n");
+
+    // 过滤掉 chunked 传输的 `size` 头部和 `0` 结束标志
+    lines = lines.filter(line => !/^[0-9A-Fa-f]+$/.test(line) && line !== "0");
+
+    body = lines.join("\r\n");
+}
+
 var chxm1023 = JSON.parse(body);
 const vipa = /api\/(ucenter\/users|play\/listening\/user)/;
 const ad = /api\/service\/(home\/index|banner\/myPage)/;
@@ -75,4 +86,6 @@ if (advert.test($request.url) && chxm1023.data) {
     };
 }
 
-$done({ body: JSON.stringify(chxm1023) });
+// 确保返回的 JSON 结构正确
+body = JSON.stringify(chxm1023).trim();
+$done({ body });
